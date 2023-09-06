@@ -1,0 +1,393 @@
+PD2 HMW LAB-11
+---------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+void insert(Node** head, int data, int atEnd) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    Node* current = *head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    if (atEnd) {
+        current->next = newNode;
+    } else {
+        newNode->next = *head;
+        *head = newNode;
+    }
+}
+
+void display(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    Node* list = NULL;
+    int num;
+
+    printf("Enter numbers (-1 to exit):\n");
+
+    while (1) {
+        scanf("%d", &num);
+
+        if (num == -1) {
+            break;
+        }
+
+        insert(&list, num, num % 2 == 0);
+    }
+
+    printf("List: ");
+    display(list);
+
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
+
+***********************************************
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+typedef struct Node Node;
+
+Node* cutLastToFirst(Node* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    Node* current = head;
+    Node* prev = NULL;
+
+    while (current->next != NULL) {
+        prev = current;
+        current = current->next;
+    }
+    prev->next = NULL;
+
+    current->next = head;
+    head = current;
+
+    return head;
+}
+
+void displayList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    Node* list = NULL;
+    int num;
+
+    printf("Enter integer values for the list (-1 to stop):\n");
+
+    while (1) {
+        scanf("%d", &num);
+
+        if (num == -1) {
+            break;
+        }
+
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = num;
+        newNode->next = list;
+        list = newNode;
+    }
+
+    printf("Original List: ");
+    displayList(list);
+
+    list = cutLastToFirst(list);
+
+    printf("Updated List: ");
+    displayList(list);
+    
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
+
+***************************************
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+Node* deleteMiddle(Node* head) {
+    if (head == NULL || head->next == NULL) {
+
+        return head;
+    }
+
+    Node* slowPtr = head;
+    Node* fastPtr = head;
+    Node* prev = NULL;
+    while (fastPtr != NULL && fastPtr->next != NULL) {
+        prev = slowPtr;
+        slowPtr = slowPtr->next;
+        fastPtr = fastPtr->next->next;
+    }
+
+    if (prev != NULL) {
+
+        prev->next = slowPtr->next;
+    } else {
+
+        head = slowPtr->next;
+    }
+    free(slowPtr);
+
+    return head;
+}
+
+void displayList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    Node* list = NULL;
+    int num;
+
+    printf("Enter integer values for the list (-1 to stop):\n");
+
+    while (1) {
+        scanf("%d", &num);
+
+        if (num == -1) {
+            break;
+        }
+
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = num;
+        newNode->next = list;
+        list = newNode;
+    }
+
+    printf("Original List: ");
+    displayList(list);
+
+    list = deleteMiddle(list);
+
+    printf("Updated List after deleting the middle element: ");
+    displayList(list);
+
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
+*****************************************
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+Node* changeFirstAndLast(Node* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    Node* firstNode = head;
+    Node* lastNode = head;
+    Node* prevLastNode = NULL;
+    while (lastNode->next != NULL) {
+        prevLastNode = lastNode;
+        lastNode = lastNode->next;
+    }
+    lastNode->next = firstNode->next;
+    prevLastNode->next = firstNode;
+    head = lastNode;
+    firstNode->next = NULL;
+
+    return head;
+}
+
+void displayList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    Node* list = NULL;
+    int num;
+
+    printf("Enter integer values for the list (-1 to stop):\n");
+
+    while (1) {
+        scanf("%d", &num);
+
+        if (num == -1) {
+            break;
+        }
+
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = num;
+        newNode->next = list;
+        list = newNode;
+    }
+
+    printf("Original List: ");
+    displayList(list);
+
+    list = changeFirstAndLast(list);
+
+    printf("Updated List after swapping first and last nodes: ");
+    displayList(list);
+
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
+****************************************
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int age;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+Node* deleteNode(Node* head, int ageToDelete) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    Node* current = head;
+    Node* prev = NULL;
+    int found = 0;
+
+    while (current->next != NULL) {
+        if (current->next->age == ageToDelete) {
+            found = 1;
+            break;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    if (found) {
+        Node* temp = current->next;
+        current->next = temp->next;
+        free(temp);
+    }
+
+    return head;
+}
+
+void displayList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("Age: %d\n", current->age);
+        current = current->next;
+    }
+}
+
+int main() {
+    Node* list = NULL;
+    int age, ageToDelete;
+
+    printf("Enter student ages (-1 to stop):\n");
+
+    while (1) {
+        scanf("%d", &age);
+
+        if (age == -1) {
+            break;
+        }
+
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->age = age;
+        newNode->next = list;
+        list = newNode;
+    }
+
+    printf("Enter the age to delete: ");
+    scanf("%d", &ageToDelete);
+
+    printf("Original List:\n");
+    displayList(list);
+
+    list = deleteNode(list, ageToDelete);
+
+    printf("Updated List after deleting the second node with age %d:\n", ageToDelete);
+    displayList(list);
+
+    while (list != NULL) {
+        Node* temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
